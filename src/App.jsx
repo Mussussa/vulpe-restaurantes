@@ -95,7 +95,7 @@ const enviarWhatsApp = () => {
       <Navbar totalItens={carrinho.length} 
             onAbrirReserva={() => setShowReserva(true)} />
 
-      <Hero />
+      <Hero onAbrirReserva={() => setShowReserva(true)} />
       <div id='menu'>
         <Galeria />
       <Destaques onSelecionar={(tipo) => setFiltro(tipo)} />
