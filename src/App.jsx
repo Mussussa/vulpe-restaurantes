@@ -95,13 +95,13 @@ const enviarWhatsApp = () => {
       <Navbar totalItens={carrinho.length} 
             onAbrirReserva={() => setShowReserva(true)} />
 
-      <Hero onAbrirReserva={() => setShowReserva(true)} />
+      <Hero />
       <div id='menu'>
         <Galeria />
       <Destaques onSelecionar={(tipo) => setFiltro(tipo)} />
       </div>
 
-       {/* Adicionada aqui */}
+      <Galeria /> {/* Adicionada aqui */}
 
 <ReservaModal show={showReserva} onClose={() => setShowReserva(false)} />
   
