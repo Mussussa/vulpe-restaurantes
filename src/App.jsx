@@ -96,11 +96,12 @@ const enviarWhatsApp = () => {
             onAbrirReserva={() => setShowReserva(true)} />
 
       <Hero />
+      <Galeria /> {/* Adicionada aqui */}
       <div id='menu'>
       <Destaques onSelecionar={(tipo) => setFiltro(tipo)} />
       </div>
 
-      <Galeria /> {/* Adicionada aqui */}
+      
 
 <ReservaModal show={showReserva} onClose={() => setShowReserva(false)} />
   
