@@ -1,36 +1,37 @@
 import React from 'react';
-import logo1 from "../assets/logo1.jpeg"; 
+import goodtissa from "../assets/goodtissa.jpeg"; 
+import '../styler/navbar.css'
 
 // Adicionamos 'onAbrirReserva' aqui nas props
 const Navbar = ({ totalItens, onAbrirReserva }) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
-      <div className="container">
-        <a className="navbar-brand fw-bold text-warning" href="#">
-          <img src={logo1} alt="Logo" className="img-fluid me-2" width="40" height="40" />
-          CHIMOIO EATS
+    <nav className="navbar navbar-expand-lg navbar-dark bg-light sticky-top shadow  " id='navbar'>
+      <div className="container" >
+        <a className="navbar-brand fw-bold " href="#"  style={{color: "brown"}}>
+          <img src={goodtissa} alt="Logo" className="img-fluid me-2 logo" width="80" height="60"  />
+          GOODTISSA
         </a>
 
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span className="navbar-toggler-icon"></span>
+        <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"  style={{backgroundColor: "brown"}}>
+          <span className="navbar-toggler-icon align-items-center"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <a className="nav-link active" href="#menu">Cardápio</a>
+        <div className="collapse navbar-collapse align-items-center" id="navbarNav  mx-auto p-2"  >
+          <ul className="navbar-nav me-auto mx-auto p-2" >
+            <li className="nav-item" >
+              <a className="nav-link active" href="#menu"  style={{color: "brown"}}>Produtos</a>
             </li>
             <li className="nav-item">
               {/* Alterado para 'button' ou mantido 'a' mas com o onClick */}
               <button 
-                className="nav-link btn btn-link text-start" 
+                className="nav-link btn btn-link text-start"  style={{color: "brown"}} 
                 onClick={(e) => {
                   e.preventDefault();
                   onAbrirReserva(); // Esta é a função que vem do App.jsx
                 }}
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none' , color: 'brown'}}
               >
-                Reservar Mesa
+               Encomendar
               </button>
             </li>
           </ul>

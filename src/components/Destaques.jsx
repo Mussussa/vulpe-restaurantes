@@ -1,4 +1,5 @@
 import React from 'react';
+import farinha_d from '../assets/farinha_d.jpeg'
 
 const Destaques = ({ onSelecionar }) => {
   return (
@@ -7,13 +8,13 @@ const Destaques = ({ onSelecionar }) => {
         {/* Opção 1: Cardápio Real */}
         <div className="col-md-6" onClick={() => onSelecionar('Real')} style={{ cursor: 'pointer' }}>
           <div className="card bg-dark text-white border-0 shadow-lg overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800" 
+            <img src={farinha_d}
                  className="card-img opacity-50" alt="Cardápio Real" 
                  style={{ height: '250px', objectFit: 'cover' }} />
             <div className="card-img-overlay d-flex flex-column justify-content-center">
-                <small className="text-white">clique para ver o cardápio</small>
-              <h2 className="card-title fw-bold">CARDÁPIO REGAL</h2>
-              <p className="card-text">A tradição de Chimoio à sua mesa.</p>
+                <small className="text-white">clique para ver mais sobre</small>
+              <h2 className="card-title fw-bold">FARINHA GOODTISSA</h2>
+              <p className="card-text">marca 100% moçambicana</p>
             </div>
           </div>
         </div>
