@@ -1,0 +1,24 @@
+:root {
+  --goodtissa-brown: #8B573C;
+  --goodtissa-white: #FFFFFF;
+}
+
+.text-brown-custom {
+  color: var(--goodtissa-brown) !important;
+}
+
+.btn-custom-brown {
+  background-color: var(--goodtissa-brown);
+  color: white;
+  border: none;
+}
+p{
+    color: #75462d;
+}
+.aberto{
+      background-color: var(--goodtissa-brown);
+      color: #FFFFFF;
+}
+.botao{
+    
+}

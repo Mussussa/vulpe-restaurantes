@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Destaques from "./components/Destaques";
-import ReservaModal from "./components/ReservaModal";
+//import ReservaModal from "./components/ReservaModal";
 import Galeria from "./components/Galeria";
 
 function App() {
@@ -16,22 +16,27 @@ function App() {
 
   // 1. Buscar dados do Google Sheets
   useEffect(() => {
-    const sheetId = "18ICkqEmRJzEhuEN9715kcuedKrpIy08q64OOb5tolzY";
+    const sheetId = "1t6Lq1Co9ZQ_1kUWQJtmgimznDWUkmIfWrRLnEIDmzRY";
     const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
 
     fetch(url)
       .then((res) => res.text())
       .then((csvText) => {
         const linhas = csvText.split("\n").slice(1);
+
+        // Dentro do useEffect, mude isto:
         const dados = linhas.map((linha) => {
           const colunas = linha.split(",");
+
           return {
             id: colunas[0]?.trim(),
             nome: colunas[1]?.trim(),
-            descricao: colunas[2]?.trim(),
-            preco: colunas[3]?.trim(),
-            categoria: colunas[4]?.trim(),
-            imagem: colunas[5]?.trim(),
+            categoria: colunas[2]?.trim().toLowerCase(),
+            descricao: colunas[3]?.trim(),
+            preco: colunas[4]?.trim(),
+            // ALTERAÇÃO AQUI: mude 'imagem' para 'imagemBase'
+            imagemBase: colunas[5]?.trim(),
+            imagemDetalhe: colunas[6]?.trim(),
           };
         });
 
@@ -57,10 +62,6 @@ function App() {
     const itensPedido = carrinho
       .map((item) => `- ${item.nome} (${item.preco} MT)`)
       .join("\n");
-    const totalGeral = carrinho.reduce(
-      (acc, item) => acc + Number(item.preco),
-      0,
-    );
 
     // 2. Pedir a localização ao utilizador
     if ("geolocation" in navigator) {
@@ -70,22 +71,31 @@ function App() {
           const lon = position.coords.longitude;
           const linkMapa = `https://www.google.com/maps?q=${lat},${lon}`;
 
-          // 3. Montar mensagem COM localização
+          // 3. Montar mensagem COM localização (Adaptado para Produtos)
           const mensagem = encodeURIComponent(
-            `*NOVO PEDIDO - GOODTISSA*\n\n${itensPedido}\n\n*Total: ${totalGeral} MT*\n\n📍 *Minha Localização:* ${linkMapa}`,
+            `*NOVO PEDIDO - GOODTISSA*\n\n*Produtos Selecionados:*\n${itensPedido}\n\n*Total: ${totalGeral} MT*\n\n📍 *Minha Localização:* ${linkMapa}`,
           );
           window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
         },
         function (error) {
-          // Se o utilizador negar a localização, envia sem o link
+          // Mensagem SEM localização
           const mensagemSemLocalizacao = encodeURIComponent(
-            `*NOVO PEDIDO - GOODTISSA*\n\n${itensPedido}\n\n*Total: ${totalGeral} MT*\n\n(Localização não partilhada)`,
+            `*NOVO PEDIDO - GOODTISSA*\n\n*Produtos Selecionados:*\n${itensPedido}\n\n*Total: ${totalGeral} MT*\n\n(Localização não partilhada)`,
           );
           window.open(
             `https://wa.me/${numero}?text=${mensagemSemLocalizacao}`,
             "_blank",
           );
         },
+      );
+    } else {
+      // Fallback caso o navegador não suporte geolocalização
+      const mensagemSemLocalizacao = encodeURIComponent(
+        `*NOVO PEDIDO - GOODTISSA*\n\n*Produtos Selecionados:*\n${itensPedido}\n\n*Total: ${totalGeral} MT*`,
+      );
+      window.open(
+        `https://wa.me/${numero}?text=${mensagemSemLocalizacao}`,
+        "_blank",
       );
     }
   };
@@ -95,7 +105,6 @@ function App() {
   };
 
   const removerDoCarrinho = (indexParaRemover) => {
-    // Filtramos o carrinho removendo apenas o item que corresponde ao índice clicado
     const novoCarrinho = carrinho.filter(
       (_, index) => index !== indexParaRemover,
     );
@@ -103,7 +112,7 @@ function App() {
   };
 
   const produtosExibidos = filtro
-    ? produtos.filter((p) => p.categoria === filtro)
+    ? produtos.filter((p) => p.categoria === filtro.toLowerCase())
     : [];
 
   return (
@@ -115,26 +124,25 @@ function App() {
 
       <Hero onAbrirReserva={() => setShowReserva(true)} />
 
-     <div id='menu'>
+      <div id="Destaques">
         {/* <Galeria /> */}
-      < Destaques onSelecionar={(tipo) => setFiltro(tipo)}  />
+        <Destaques onSelecionar={(tipo) => setFiltro(tipo)} />
       </div>
 
-      {/* Adicionada aqui */}
-
-      <ReservaModal show={showReserva} onClose={() => setShowReserva(false)} />
-
-        
+      {/* <ReservaModal show={showReserva} onClose={() => setShowReserva(false)} /> */}
 
       {/* Secção de Detalhes Dinâmicos */}
       <div className="container py-4" id="menu">
         {filtro && (
           <div className="fade-in animate__animated animate__fadeInUp">
-            <h3 className="text-center mb-4 border-bottom pb-2 fw-bold text-primary">
-              {filtro === "Real" ? "📜 Cardápio Regal" : "⭐️ Sugestões do Dia"}
+            <h3
+              className="text-center mb-4 border-bottom pb-2 fw-bold"
+              style={{ color: "#75462d" }}
+            >
+              {filtro === "Real" ? " FARINHA GOODTISSA" : "🌿 ÓLEOS NATURAIS"}
             </h3>
 
-            <div className="row">
+            <div className="row" >
               {produtosExibidos.length > 0 ? (
                 produtosExibidos.map((item) => (
                   <div className="col-md-4 mb-3" key={item.id}>
@@ -149,7 +157,8 @@ function App() {
                         </span>
                         <button
                           onClick={() => adicionarAoCarrinho(item)}
-                          className="btn btn-sm btn-outline-primary rounded-pill"
+                          className="btn btn-sm btn-outline-warning rounded-pill"
+                          style={{ color: "#75462d", borderColor: "#75462d" }}
                         >
                           + Adicionar
                         </button>
@@ -159,7 +168,7 @@ function App() {
                 ))
               ) : (
                 <p className="text-center text-muted">
-                  A carregar pratos desta categoria...
+                  A carregar produtos desta categoria...
                 </p>
               )}
             </div>
@@ -171,14 +180,18 @@ function App() {
 
       {/* Listagem Geral de Produtos */}
       <div className="container py-5">
-        <header className="text-center mb-5">
-          <h2 className="fw-bold">Nossa Seleção Completa</h2>
-          <p className="text-muted">Tudo o que Chimoio tem de melhor</p>
+        <header className="text-center mb-5" id="Catalogo">
+          <h2 className="fw-bold" style={{ color: "#75462d" }}>
+            Nosso Catálogo Completo
+          </h2>
+          <p className="text-muted">
+            A solução completa para uma vida saudável
+          </p>
         </header>
 
         {loading ? (
           <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status"></div>
+            <div className="spinner-border text-warning" role="status"></div>
           </div>
         ) : (
           <div className="row g-4">
@@ -186,7 +199,11 @@ function App() {
               <div className="col-12 col-md-6 col-lg-4" key={item.id}>
                 <div className="card h-100 shadow-sm border-0">
                   <img
-                    src={item.imagem || "https://via.placeholder.com/300x200"}
+                    // Corrigido para chamar imagemBase do Google Sheets
+                    src={
+                      item.imagemBase ||
+                      "https://res.cloudinary.com/dweg8p9cy/image/upload/v1777555245/result_WhatsApp_Image_2026-04-30_at_02.32.31_npd7vz.jpg"
+                    }
                     className="card-img-top"
                     alt={item.nome}
                     style={{ height: "220px", objectFit: "cover" }}
@@ -202,9 +219,10 @@ function App() {
                       </span>
                       <button
                         onClick={() => adicionarAoCarrinho(item)}
-                        className="btn btn-primary rounded-pill px-4"
+                        className="btn text-white rounded-pill px-4"
+                        style={{ backgroundColor: "#8B573C" }}
                       >
-                        Pedir
+                        Comprar
                       </button>
                     </div>
                   </div>
@@ -215,7 +233,7 @@ function App() {
         )}
       </div>
 
-      {/* BARRA DE FINALIZAÇÃO (Apenas aparece se tiver itens no carrinho) */}
+      {/* BARRA DE FINALIZAÇÃO */}
       {carrinho.length > 0 && (
         <div
           className="fixed-bottom bg-white border-top shadow-lg p-3 animate__animated animate__slideInUp"
@@ -224,12 +242,14 @@ function App() {
           <div className="container">
             <div className="d-flex justify-content-between align-items-center mb-2">
               <h6 className="fw-bold mb-0">O teu Pedido:</h6>
-              <span className="badge bg-primary rounded-pill">
+              <span
+                className="badge rounded-pill"
+                style={{ backgroundColor: "#8B573C" }}
+              >
                 {carrinho.length} itens
               </span>
             </div>
 
-            {/* Mini lista de itens para conferir e remover */}
             <div
               className="d-flex flex-nowrap overflow-auto pb-2 mb-2"
               style={{ gap: "10px" }}
@@ -259,16 +279,16 @@ function App() {
                 onClick={enviarWhatsApp}
                 className="btn btn-success btn-lg rounded-pill px-4"
               >
-                <i className="bi bi-whatsapp me-2"></i> Finalizar Pedido
+                <i className="bi bi-whatsapp me-2"></i> Encomendar
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Botão de WhatsApp Flutuante (Apenas suporte rápido) */}
+      {/* Botão de WhatsApp Flutuante */}
       <a
-        href="https://wa.me/258876108960?text=Olá! Preciso de ajuda com o cardápio."
+        href="https://wa.me/258876108960?text=Olá! Gostaria de saber mais sobre os produtos da GOODTISSA."
         className="btn btn-dark rounded-circle shadow-lg position-fixed m-4 d-flex align-items-center justify-content-center"
         style={{
           width: "50px",
@@ -276,15 +296,13 @@ function App() {
           zIndex: 1000,
           bottom: carrinho.length > 0 ? "80px" : "0",
           right: "0",
+          backgroundColor: "#25D366", // Cor do WhatsApp
+          borderColor: "#25D366",
         }}
       >
-        <i className="bi bi-chat-dots fs-4"></i>
+        <i className="bi bi-whatsapp fs-4 text-white"></i>
       </a>
-
-
     </div>
-
-    
   );
 }
 

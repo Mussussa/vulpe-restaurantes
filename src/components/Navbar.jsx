@@ -7,31 +7,32 @@ const Navbar = ({ totalItens, onAbrirReserva }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-light sticky-top shadow  " id='navbar'>
       <div className="container" >
-        <a className="navbar-brand fw-bold " href="#"  style={{color: "brown"}}>
+        <a className="navbar-brand fw-bold " href="#"  style={{color: "#75462d"}}>
           <img src={goodtissa} alt="Logo" className="img-fluid me-2 logo" width="80" height="60"  />
           GOODTISSA
         </a>
 
-        <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"  style={{backgroundColor: "brown"}}>
+        <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"  style={{backgroundColor: "#8B573C"}}>
           <span className="navbar-toggler-icon align-items-center"></span>
         </button>
 
         <div className="collapse navbar-collapse align-items-center" id="navbarNav  mx-auto p-2"  >
           <ul className="navbar-nav me-auto mx-auto p-2" >
             <li className="nav-item" >
-              <a className="nav-link active" href="#menu"  style={{color: "brown"}}>Produtos</a>
+              <a className="nav-link active" href="#Destaques"  style={{color: "brown"}}>Produtos</a>
             </li>
             <li className="nav-item">
               {/* Alterado para 'button' ou mantido 'a' mas com o onClick */}
               <button 
                 className="nav-link btn btn-link text-start"  style={{color: "brown"}} 
-                onClick={(e) => {
-                  e.preventDefault();
-                  onAbrirReserva(); // Esta é a função que vem do App.jsx
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   onAbrirReserva(); // Esta é a função que vem do App.jsx
+                // }}
+
                 style={{ textDecoration: 'none' , color: 'brown'}}
               >
-               Encomendar
+               <a href="#Catalogo" style={{textDecoration:'none'}}>Catálogo</a>
               </button>
             </li>
           </ul>
