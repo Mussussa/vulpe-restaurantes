@@ -6,7 +6,9 @@ import Hero from "./components/Hero";
 import Destaques from "./components/Destaques";
 //import ReservaModal from "./components/ReservaModal";
 import Galeria from "./components/Galeria";
-
+import { DotLottiePlayer } from "@dotlottie/react-player";
+import "@dotlottie/react-player/dist/index.css";
+import animationData from "../src/assets/caregando.lottie";
 function App() {
   const [produtos, setProdutos] = useState([]);
   const [carrinho, setCarrinho] = useState([]);
@@ -142,7 +144,7 @@ function App() {
               {filtro === "Real" ? " FARINHA GOODTISSA" : "🌿 ÓLEOS NATURAIS"}
             </h3>
 
-            <div className="row" >
+            <div className="row">
               {produtosExibidos.length > 0 ? (
                 produtosExibidos.map((item) => (
                   <div className="col-md-4 mb-3" key={item.id}>
@@ -191,7 +193,16 @@ function App() {
 
         {loading ? (
           <div className="text-center py-5">
-            <div className="spinner-border text-warning" role="status"></div>
+            {/* Substituído o spinner antigo pela sua nova animação */}
+            <DotLottiePlayer
+              src={animationData}
+              autoplay
+              loop
+              style={{ width: "200px", height: "200px", margin: "0 auto" }}
+            />
+            <p className="mt-2 text-muted">
+              A preparar os melhores produtos...
+            </p>
           </div>
         ) : (
           <div className="row g-4">

@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dotlottie/react-player": "^1.6.19",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",

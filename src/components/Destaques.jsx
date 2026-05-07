@@ -1,6 +1,7 @@
 import React from "react";
 import farinha_d from "../assets/farinha_d.jpeg";
 import coco_d from "../assets/coco_d.jpeg";
+import '../styler/destaques.css'
 
 const Destaques = ({ onSelecionar }) => {
   return (
@@ -31,12 +32,12 @@ const Destaques = ({ onSelecionar }) => {
 
         {/* Opção 2: Prato do Dia */}
         <div
-          className="col-md-6"
+          className="col-md-6 "
           onClick={() => onSelecionar("ÓLEO")}
           style={{ cursor: "pointer" }}
         >
           <a href="#Destaques">
-          <div className="card bg-dark text-white border-0 shadow-lg overflow-hidden">
+          <div className="card bg-dark text-white border-0 shadow-lg overflow-hidden ">
             {/* Trocamos a div com background por uma tag img real, como no seu modelo */}
 
 
