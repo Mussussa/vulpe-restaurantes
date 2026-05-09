@@ -290,6 +290,8 @@ function App() {
         </div>
       )}
 
+      
+
       {/* BARRA DE FINALIZAÇÃO */}
       {carrinho.length > 0 && (
         <div
