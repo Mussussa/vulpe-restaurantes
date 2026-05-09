@@ -9,12 +9,14 @@ import Galeria from "./components/Galeria";
 import { DotLottiePlayer } from "@dotlottie/react-player";
 import "@dotlottie/react-player/dist/index.css";
 import animationData from "../src/assets/caregando.lottie";
+import InfoConfianca from "./components/InfoConfianca";
 function App() {
   const [produtos, setProdutos] = useState([]);
   const [carrinho, setCarrinho] = useState([]);
   const [filtro, setFiltro] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showReserva, setShowReserva] = useState(false);
+  const [imagemModal, setImagemModal] = useState(null);
 
   // 1. Buscar dados do Google Sheets
   useEffect(() => {
@@ -181,6 +183,7 @@ function App() {
       <hr className="container" />
 
       {/* Listagem Geral de Produtos */}
+      {/* Listagem Geral de Produtos */}
       <div className="container py-5">
         <header className="text-center mb-5" id="Catalogo">
           <h2 className="fw-bold" style={{ color: "#75462d" }}>
@@ -193,24 +196,35 @@ function App() {
 
         {loading ? (
           <div className="text-center py-5">
-            {/* Substituído o spinner antigo pela sua nova animação */}
             <DotLottiePlayer
               src={animationData}
               autoplay
               loop
               style={{ width: "200px", height: "200px", margin: "0 auto" }}
             />
-            <p className="mt-2 text-muted">
-              A preparar os melhores produtos...
-            </p>
           </div>
         ) : (
           <div className="row g-4">
             {produtos.map((item) => (
               <div className="col-12 col-md-6 col-lg-4" key={item.id}>
-                <div className="card h-100 shadow-sm border-0">
+                <div className="card h-100 shadow-sm border-0 position-relative">
+                  {/* ÍCONE DE VER MAIS INFORMAÇÕES (imagemDetalhe) */}
+                  <button
+                    onClick={() => setImagemModal(item.imagemDetalhe)}
+                    className="btn btn-light rounded-circle position-absolute m-2 shadow-sm"
+                    style={{
+                      top: 0,
+                      right: 0,
+                      zIndex: 10,
+                      width: "40px",
+                      height: "40px",
+                    }}
+                    title="Ver detalhes do produto"
+                  >
+                    <i className="bi bi-info-circle-fill text-primary"></i>
+                  </button>
+
                   <img
-                    // Corrigido para chamar imagemBase do Google Sheets
                     src={
                       item.imagemBase ||
                       "https://res.cloudinary.com/dweg8p9cy/image/upload/v1777555245/result_WhatsApp_Image_2026-04-30_at_02.32.31_npd7vz.jpg"
@@ -219,6 +233,7 @@ function App() {
                     alt={item.nome}
                     style={{ height: "220px", objectFit: "cover" }}
                   />
+
                   <div className="card-body d-flex flex-column">
                     <h5 className="card-title fw-bold">{item.nome}</h5>
                     <p className="card-text text-muted small">
@@ -243,6 +258,37 @@ function App() {
           </div>
         )}
       </div>
+
+      {/* MODAL PARA MOSTRAR A IMAGEM DE DETALHE NO MEIO DA TELA */}
+      {imagemModal && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center px-3"
+          style={{ zIndex: 2000, backgroundColor: "rgba(0,0,0,0.8)" }}
+          onClick={() => setImagemModal(null)}
+        >
+          <div
+            className="position-relative animate__animated animate__zoomIn"
+            style={{ maxWidth: "500px", width: "100%" }}
+          >
+            <button
+              className="btn btn-light rounded-circle position-absolute"
+              style={{ top: "-20px", right: "-20px", zIndex: 2001 }}
+              onClick={() => setImagemModal(null)}
+            >
+              <i className="bi bi-x-lg"></i>
+            </button>
+            <img
+              src={imagemModal}
+              className="img-fluid rounded shadow-lg"
+              alt="Detalhes do Produto"
+              style={{ maxHeight: "80vh", width: "100%", objectFit: "contain" }}
+            />
+            <p className="text-white text-center mt-3 small">
+              Clique fora para fechar
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* BARRA DE FINALIZAÇÃO */}
       {carrinho.length > 0 && (
@@ -313,6 +359,9 @@ function App() {
       >
         <i className="bi bi-whatsapp fs-4 text-white"></i>
       </a>
+
+      <InfoConfianca />
+      <hr className="container" />
     </div>
   );
 }
